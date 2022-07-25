@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import NewsItem from './NewsItem';
 import axios from 'axios';
@@ -18,19 +18,20 @@ const NewsListBlock = styled.div`
 const NewsList = ( category ) => {
   const [articles, setArticles] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [qcategory, setQCategory] = useState('');
+  const [qcategory, setQCategory] = useState(category);
 
   useEffect(() => {
     // async 사용 함수 따로 선언
     const fetchData = async () => {
       setLoading(true);
       try {
-        const query = category === 'all' ? setQCategory('') : setQCategory(category);
-        console.log('주소: '+ `https://newsapi.org/v2/top-headlines?country=kr${query}&apiKey=887b66f4f0ca475696ca309844b1273b`);
+        setQCategory(qcategory.category === 'all' ? '' : `&category=${qcategory.category}`);
+        // const query = qcategory.category === 'all' ? '' : `&category=${qcategory.category}`;
+        console.log(qcategory.category);
 
         const response = await axios.get(
           // 현재는 카테고리 선택이 없어진 것 같음
-          `https://newsapi.org/v2/top-headlines?country=kr${query}&apiKey=887b66f4f0ca475696ca309844b1273b`,
+          `https://newsapi.org/v2/top-headlines?country=kr${qcategory.category}&apiKey=887b66f4f0ca475696ca309844b1273b`,
           // `https://newsapi.org/v2/top-headlines?country=kr&apiKey=887b66f4f0ca475696ca309844b1273b`,
         );
         setArticles(response.data.articles);
