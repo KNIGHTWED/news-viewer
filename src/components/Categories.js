@@ -71,15 +71,15 @@ const Category = styled(NavLink)`
     margin-left: 1rem;
   }
 `;
-
+/*
 const Categories = ({ onSelect, category }) => {
   return (
     <CategoriesBlock>
       {categories.map((c) => (
         <Category
           key={c.name}
-          activeClassName="active"kk52
-          exact={c.name === 'all'}
+          className={({isActive}) => isActive ? "active":undefined}
+          // exact={c.name === 'all'}
           to={c.name === 'all' ? '/' : `/${c.name}`}
         >
           {c.text}
@@ -88,5 +88,22 @@ const Categories = ({ onSelect, category }) => {
     </CategoriesBlock>
   );
 };
+ */
+const Categories = ({ onSelect, category }) => {
+  return (
+    <CategoriesBlock>
+      {categories.map((c) => (
+        <Category
+          key={c.name}
+          active={category === c.name}
+          onClick={() => onSelect(c.name)}
+        >
+          {c.text}
+        </Category>
+      ))}
+    </CategoriesBlock>
+  );
+};
+
 
 export default Categories;
